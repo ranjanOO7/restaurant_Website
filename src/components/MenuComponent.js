@@ -8,7 +8,7 @@ import {
     // CardText,
     CardTitle,
 } from "reactstrap";
-import DishesComp from "./DishesComponent";
+import DishDetail from "./DishdetailComponent";
 
 class Menu extends Component {
     constructor(props) {
@@ -27,7 +27,7 @@ class Menu extends Component {
     renderDish(dish) {
         // console.log(dish);
         if (dish != null) {
-            return <DishesComp comp={dish} />;
+            return <DishDetail comp={dish} />;
         } else {
             return <div></div>;
         }
