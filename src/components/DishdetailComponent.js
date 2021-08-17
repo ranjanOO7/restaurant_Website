@@ -16,6 +16,7 @@ class DishDetail extends Component {
     }
 
     renderDish(dish) {
+        // console.log(dish);
         return (
             <Card>
                 <CardImg
@@ -38,7 +39,12 @@ class DishDetail extends Component {
                     <div>
                         <p>{com.comment}</p>
                         <p>
-                            --{com.author},{com.date}
+                            --{com.author},
+                            {new Intl.DateTimeFormat("en-us", {
+                                year: "numeric",
+                                month: "short",
+                                day: "2-digit",
+                            }).format(new Date(Date.parse(com.date)))}
                         </p>
                     </div>
                 );
@@ -54,15 +60,15 @@ class DishDetail extends Component {
         );
     }
     render() {
-        console.log(this.props.comp);
-        console.log(this.props.comp.comments);
+        console.log(this.props);
+        // console.log(this.props.comp.comments);
         return (
-            <div className="row">
-                <div className="col-12 col-sm-12 col-md-5 m-1">
-                    {this.renderDish(this.props.comp)}
-                </div>
-                <div className="col-12 col-sm-12 col-md-5 m-1">
-                    {this.renderComments(this.props.comp.comments)}
+            <div className="container">
+                <div className="row">
+                    <div className="col-12 col-sm-12 col-md-5 m-1">
+                        {this.renderDish(this.props.comp)}
+                        {this.renderComments(this.props.comp.comments)}
+                    </div>
                 </div>
             </div>
         );
