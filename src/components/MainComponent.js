@@ -7,7 +7,6 @@ import DishDetail from "./DishdetailComponent";
 class Main extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             dishes: DISHES,
             selectedDish: null,
@@ -33,9 +32,9 @@ class Main extends Component {
                     onClick={(dishId) => this.onDishSelect(dishId)}
                 />
                 <DishDetail
-                    comp={
+                    dish={
                         this.state.dishes.filter(
-                            (dish) => dish.id !== this.state.selectedDish
+                            (dish) => dish.id === this.state.selectedDish
                         )[0]
                     }
                 />
@@ -43,4 +42,5 @@ class Main extends Component {
         );
     }
 }
+
 export default Main;

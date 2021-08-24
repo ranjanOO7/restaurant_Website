@@ -1,5 +1,4 @@
 import React from "react";
-import { Component } from "react";
 import {
     Card,
     CardImg,
@@ -8,45 +7,34 @@ import {
     // CardText,
     CardTitle,
 } from "reactstrap";
-// import DishDetail from "./DishdetailComponent";
 
-class Menu extends Component {
-    constructor(props) {
-        super(props);
-        console.log("Menu components cunstructor is invoked");
-    }
+function RenderMenuItem({ dish, onClick }) {
+    // console.log(dish.id);
+    return (
+        <Card onClick={() => onClick(dish.id)}>
+            <CardImg width="100%" src={dish.image} alt={dish.name}></CardImg>
+            <CardImgOverlay>
+                <CardTitle>{dish.name}</CardTitle>
+            </CardImgOverlay>
+        </Card>
+    );
+}
 
-    componentDidMount() {
-        console.log("Menu components componentDidMount cunstructor is invoked");
-    }
-
-    render() {
-        const menu = this.props.dishes.map((dish) => {
-            return (
-                <div key={dish.id} className="col-12 col-md-5 m-1">
-                    <Card onClick={() => this.props.onClick(dish.id)}>
-                        <CardImg
-                            width="100%"
-                            src={dish.image}
-                            alt={dish.name}
-                        ></CardImg>
-
-                        <CardImgOverlay>
-                            <CardTitle>{dish.name}</CardTitle>
-                        </CardImgOverlay>
-                    </Card>
-                </div>
-            );
-        });
-
-        console.log("Render method is invoked");
-
+const Menu = (props) => {
+    // console.log(props.onClick);
+    const menu = props.dishes.map((dish) => {
         return (
-            <div className="container">
-                <div className="row">{menu}</div>
+            <div key={dish.id} className="col-12 col-md-5 m-1">
+                <RenderMenuItem dish={dish} onClick={props.onClick} />
             </div>
         );
-    }
-}
+    });
+
+    return (
+        <div className="container">
+            <div className="row">{menu}</div>
+        </div>
+    );
+};
 
 export default Menu;
