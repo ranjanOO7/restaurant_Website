@@ -257,7 +257,7 @@ class Contact extends Component {
                                         model=".message"
                                         id="message"
                                         name="message"
-                                        row="12"
+                                        rows="12"
                                         className="form-control"
                                     />
                                 </Col>

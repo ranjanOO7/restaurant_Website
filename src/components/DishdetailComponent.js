@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
     Card,
     CardImg,
@@ -7,14 +7,26 @@ import {
     CardBody,
     CardText,
     CardTitle,
+    Modal,
+    ModalBody,
+    ModalHeader,
+    Button,
+    Label,
+    Nav,
+    NavItem,
+    Row,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Control, LocalForm, Errors } from "react-redux-form";
+
+const required = (val) => val && val.length;
+const minLength = (len) => (val) => val && val.length >= len;
+const maxLength = (len) => (val) => !val || val.length <= len;
 
 function RenderDish({ dish }) {
     return (
         <div className="col-12 col-sm-12 col-md-5 m-1">
             <Card key={dish.id}>
-                <h1>He got here</h1>
                 <CardImg
                     width="100%"
                     src={dish.image}
@@ -34,7 +46,7 @@ function RenderComments({ comment }) {
     const comp = comment.map((com) => {
         if (comment != null) {
             return (
-                <div className="col-12 col-sm-12 col-md-5 m-1">
+                <div className="col-12 col-sm-12 col-md-7 m-1">
                     <div key={com.id}>
                         <p>{com.comment}</p>
                         <p>
@@ -56,11 +68,11 @@ function RenderComments({ comment }) {
         <div className="col-12 col-sm-12 col-md-5 m-1">
             <h4>Comments</h4>
             <div>{comp}</div>
+            <CommentForm />
         </div>
     );
 }
 const DishDetail = (props) => {
-    console.log(props);
     if (props.dish != null) {
         return (
             <div className="container">
@@ -91,5 +103,115 @@ const DishDetail = (props) => {
         return <div></div>;
     }
 };
+
+class CommentForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isComOpen: false,
+        };
+
+        this.toggleCom = this.toggleCom.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(values) {
+        alert("Current state is: " + JSON.stringify(values));
+    }
+
+    toggleCom() {
+        this.setState({
+            isComOpen: !this.state.isComOpen,
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <Nav className="">
+                    <NavItem>
+                        <Button
+                            onClick={this.toggleCom}
+                            className="bg-light border border-dark text-dark"
+                        >
+                            <span className="fa fa-pencil fa-lg"> </span>
+                            Submit Comments
+                        </Button>
+                    </NavItem>
+                </Nav>
+                <Modal isOpen={this.state.isComOpen} toggle={this.toggleCom}>
+                    <ModalHeader toggle={this.toggleCom}>
+                        Submit Comment
+                    </ModalHeader>
+                    <ModalBody>
+                        <LocalForm
+                            className="m-1"
+                            onSubmit={(values) => this.handleSubmit(values)}
+                        >
+                            <Row className="form-group mt-1">
+                                <Label htmlFor="rating">Rating</Label>
+                                <Control.select
+                                    model=".rating"
+                                    name="rating"
+                                    className="form-control"
+                                >
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </Control.select>
+                            </Row>
+                            <Row className="form-group mt-1">
+                                <Label htmlFor="author">Your Name</Label>
+                                <Control.text
+                                    model=".author"
+                                    name="author"
+                                    id="author"
+                                    placeholder="Your Name"
+                                    className="form-control"
+                                    validators={{
+                                        required,
+                                        minLength: minLength(3),
+                                        maxLength: maxLength(15),
+                                    }}
+                                />
+                                <Errors
+                                    className="text-danger"
+                                    model=".author"
+                                    show="touched"
+                                    messages={{
+                                        required: "Required",
+                                        minLength:
+                                            "Must be greater than 2 characters",
+                                        maxLength:
+                                            "Must be equal to or less than 15 characters",
+                                    }}
+                                />
+                            </Row>
+                            <Row className="form-group mt-1">
+                                <Label htmlFor="comment">Comment</Label>
+                                <Control.textarea
+                                    model=".comment"
+                                    name="comment"
+                                    id="comment"
+                                    className="form-control"
+                                    rows="6"
+                                />
+                            </Row>
+                            <Row className="form-group mt-1">
+                                {/* <Col md={{ size: 10, offset: 2 }}> */}
+                                <Button type="submit" className="bg-primary">
+                                    Submit
+                                </Button>
+                                {/* </Col> */}
+                            </Row>
+                        </LocalForm>
+                    </ModalBody>
+                </Modal>
+            </div>
+        );
+    }
+}
 
 export default DishDetail;
