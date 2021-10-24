@@ -13,6 +13,7 @@ import {
     fetchComments,
     fetchDishes,
     fetchPromos,
+    fetchLeaders,
 } from "../redux/ActionCreators";
 import { actions } from "react-redux-form";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
@@ -41,6 +42,9 @@ const mapDispatchToProps = (dispatch) => ({
     fetchPromos: () => {
         dispatch(fetchPromos());
     },
+    fetchLeaders: () => {
+        dispatch(fetchLeaders());
+    },
 });
 
 class Main extends Component {
@@ -53,10 +57,12 @@ class Main extends Component {
         this.props.fetchDishes();
         this.props.fetchComments();
         this.props.fetchPromos();
+        this.props.fetchLeaders();
     }
 
     render() {
         const HomePage = () => {
+            console.log(this.props.leaders.leaders);
             return (
                 <Home
                     dish={
@@ -74,10 +80,12 @@ class Main extends Component {
                     promosLoading={this.props.promotions.isLoading}
                     promosErrMess={this.props.promotions.errMess}
                     leader={
-                        this.props.leaders.filter(
+                        this.props.leaders.leaders.filter(
                             (leader) => leader.featured
                         )[0]
                     }
+                    leaderLoading={this.props.leaders.isLoading}
+                    leaderErrMess={this.props.leaders.errMess}
                 />
             );
         };
@@ -117,7 +125,15 @@ class Main extends Component {
                             <Route
                                 path="/aboutus"
                                 component={() => (
-                                    <About leaders={this.props.leaders} />
+                                    <About
+                                        leaders={this.props.leaders.leaders}
+                                        leaderLoading={
+                                            this.props.leaders.isLoading
+                                        }
+                                        leaderErrMess={
+                                            this.props.leaders.errMess
+                                        }
+                                    />
                                 )}
                             />
                             <Route
